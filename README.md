@@ -260,6 +260,11 @@ ranked_dict = { 1 : [title1,rating1, price1, review_count1, avaliability1] ,....
 
 
 
+### Future Scope
+Adding more features to fine tune the result especially features like availibility, price, etc.
+
+
+
 
 
 
