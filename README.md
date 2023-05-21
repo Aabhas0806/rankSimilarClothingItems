@@ -16,7 +16,7 @@ python manage.py runserver
 https://www.digitalocean.com/community/tutorials/how-to-install-django-and-set-up-a-development-environment-on-ubuntu-16-04
 
 ### Video Demonstration:
-In thr folder **Working Video** (See Above)
+In the folder **Working Video** (See Above)
 
 
 ### Phases In project
