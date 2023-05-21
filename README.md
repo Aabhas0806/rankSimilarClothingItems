@@ -12,18 +12,20 @@ pip install -r requirement.py
 ```
 python manage.py runserver
 ```
-### Setup Instructions (For linux)
+### Setup Instructions (For Ubuntu)
+https://www.digitalocean.com/community/tutorials/how-to-install-django-and-set-up-a-development-environment-on-ubuntu-16-04
+
+### Video Demonstration:
 
 
-
-### Phases
+### Phases In project
 1. Phase 1: Api call and input data
 2. Phase 2: Scrapping relevent information and store it
 3. Phase 3: Calculating similarity between input text and  descriptions
 4. Phase 4: Calculate ranks based on similarity and rating 
 5. Phase 5: return a json response of relevent links
 
-### Api call and Input data
+### Phase 1 : Api call and Input data
 
 Api are written using Django framework.
 
@@ -44,7 +46,7 @@ def get_ranked_list(request,*args, **kwargs):
     content = {'success': 200}
     return Response(content) #json response
  ```
-### Scrapping relevent information and store it
+### Phase 2 : Scrapping relevent information and store it
 
 Beautifulsoup4 is used for the scrapping. 
 
@@ -91,7 +93,7 @@ def get_price(soup):
  }
  ```
  
- ### Calculating similarity between input text and  descriptions
+ ### Phase 3 : Calculating similarity between input text and  descriptions
  
  To calulate similarity between the input text and the product title(as amazon has generic title) BERT model and cosine similarity function is used.
  
@@ -128,7 +130,7 @@ sentences = [input_data] + d['title']
 This main output of this phase is ```similarity_list```. It is list of the % of similary between input description and the title of each product.
 
 
-### Calculate ranks based on similarity and rating
+### Phase 4 : Calculate ranks based on similarity and rating
 
 In this phase we are equipped with two important factor of each product namely ```similarity_list``` and ```rating```.
 
@@ -182,7 +184,9 @@ Here the item credit and item points for similarity:
   For each value of similarity and rating of a particular product is fed into the formula in the function ```ranker_function``` and final evaluation value is generated per product
   
 Ranker function
-```
+
+```py
+
 def ranker_function(n, similarity_list, rating_list):
  
   rank_list = [][:] #rank list
@@ -235,15 +239,24 @@ def ranker_function(n, similarity_list, rating_list):
     rank = 5*sim_score + 4*rating_score
     rank/= (5 + 4)
     rank_list.append(rank)
-    ```
     
-    Once the final evaluation score are calucated just sort the list in reverse order but the only catch instead of storing the evaluation values we make a ** hash table ** indexes of the sorted values and store them
-    
-    ```py
     rank_list_index = sorted(range(len(rank_list)), key=lambda x: rank_list[x], reverse=True) # reverse sorted list of indexes
   # print(rank_list_index)
   return rank_list_index
   ```
+
+Once the final evaluation score are calucated just sort the list in reverse order but the only catch instead of storing the evaluation values we make a **hash table** indexes of the sorted values and store them.
+ 
+### Phase 5 : Return a json response of relevent links
+
+In this final phase using the sorted hashes we created a ranked dictionary and convert it into json
+
+Ranked dictionary:
+
+```py
+ranked_dict = { 1 : [title1,rating1, price1, review_count1, avaliability1] ,....}
+```
+
 
 
 
